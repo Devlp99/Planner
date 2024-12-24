@@ -1,0 +1,49 @@
+/* Theme Colors */
+.theme-light {
+    --bg-color: url('images/3792b2270d60c5bd157641953dca322b.jpg'); 
+    --text-color: #333333;
+    --card-bg: url('images/3792b2270d60c5bd157641953dca322b.jpg'); 
+}
+
+.theme-dark {
+    --bg-color: url('images/d07ff5c9979c428f63e22352826aef4a.jpg'); 
+    --text-color: #ffffff;
+    --card-bg: url('images\d07ff5c9979c428f63e22352826aef4a.jpg'); 
+}
+
+
+body {
+    background-color: transparent; 
+}
+
+
+.card {
+    background-color: var(--card-bg);
+}
+
+/* Flashcard Styling */
+.flashcard {
+    min-height: 200px;
+    cursor: pointer;
+}
+
+.mastery-green {
+    background-color: #28a745;
+}
+
+.mastery-yellow {
+    background-color: #ffc107;
+}
+
+.mastery-red {
+    background-color: #dc3545;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none;
+}
+
+#calendar {
+    height: 500px;
+}

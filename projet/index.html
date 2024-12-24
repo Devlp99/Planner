@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planner Tools</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        .theme-light {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --card-bg: #f8f9fa;
+        }
+        
+        .theme-dark {
+            --bg-color: #333333;
+            --text-color: #ffffff;
+            --card-bg: #444444;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+        }
+
+        .flashcard {
+            min-height: 200px;
+            cursor: pointer;
+        }
+
+        .mastery-green { background-color: #28a745; }
+        .mastery-yellow { background-color: #ffc107; }
+        .mastery-red { background-color: #dc3545; }
+
+        .hidden {
+            display: none;
+        }
+
+        #calendar {
+            height: 500px;
+        }
+    </style>
+</head>
+<body class="theme-light">
+    <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#home">Planner Tools</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#todo">Tasks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#flashcards">Flashcards</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#calendar">Calendar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#lessons">Lessons</a>
+                </li>
+                <!-- Add Timer Link Here -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#timer">Timer</a>
+                </li>
+            </ul>
+            <div class="d-flex">
+                <!-- Theme Toggle Button -->
+                <button id="themeToggle" class="btn btn-outline-light me-2" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            
+                <div id="authButtons">
+                    <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</button>
+                </div>
+                <div id="userInfo" class="hidden">
+                    <span class="text-light me-2" id="userEmail"></span>
+                    <button class="btn btn-outline-light" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Home Section -->
+        <section id="home" class="section">
+            <h2>Welcome to Student Planner</h2>
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Todo Tasks</h5>
+                            <p id="todoCount">0 pending tasks</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Flashcards</h5>
+                            <p id="flashcardCount">0 cards</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Upcoming Exams</h5>
+                            <p id="examCount">0 exams</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Lessons</h5>
+                            <p id="lessonCount">0 lessons</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <!-- Timer Section -->
+<section id="timer" class="section hidden">
+    <h2>Timer / Stopwatch</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Select Mode</h5>
+                    <div>
+                        <input type="radio" id="timerMode" name="mode" value="timer" checked>
+                        <label for="timerMode">Timer</label>
+                        <input type="radio" id="stopwatchMode" name="mode" value="stopwatch">
+                        <label for="stopwatchMode">Stopwatch</label>
+                    </div>
+
+                    <div id="timerContainer">
+                        <div id="timerDisplay">00:00:00</div>
+                        <input type="number" id="timerInput" placeholder="Enter time in seconds" class="form-control mb-3" />
+                        <button id="startButton" class="btn btn-primary">Start</button>
+                        <button id="stopButton" class="btn btn-secondary">Stop</button>
+                        <button id="resetButton" class="btn btn-danger">Reset</button>
+                    </div>
+
+                    <div id="stopwatchContainer" class="hidden">
+                        <div id="stopwatchDisplay">00:00:00</div>
+                        <button id="stopwatchStartButton" class="btn btn-primary">Start Stopwatch</button>
+                        <button id="stopwatchStopButton" class="btn btn-secondary">Stop Stopwatch</button>
+                        <button id="stopwatchResetButton" class="btn btn-danger">Reset Stopwatch</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+        <!-- Todo Section -->
+        <section id="todo" class="section hidden">
+            <h2>Todo List</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="todoForm">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="todoInput" placeholder="New task">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Task</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <ul id="todoList" class="list-group">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flashcards Section -->
+        <section id="flashcards" class="section hidden">
+            <h2>Flashcards</h2>
+            <div class="row mb-3">
+                <div class="col">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFlashcardModal">
+                        Add Flashcard
+                    </button>
+                </div>
+            </div>
+            <div id="flashcardContainer" class="row">
+            </div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section id="calendar" class="section hidden">
+            <h2>Calendar</h2>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="calendarContainer"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Add Event</h5>
+                            <form id="eventForm">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="eventTitle" placeholder="Event Title">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="date" class="form-control" id="eventDate">
+                                </div>
+                                <div class="mb-3">
+                                    <select class="form-control" id="eventType">
+                                        <option value="exam">Exam</option>
+                                        <option value="homework">Homework</option>
+                                        <option value="lesson">Lesson</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Event</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lessons Section -->
+        <section id="lessons" class="section hidden">
+            <h2>Lessons Progress</h2>
+            <div class="row mb-3">
+                <div class="col">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLessonModal">
+                        Add Lesson
+                    </button>
+                </div>
+            </div>
+            <div id="lessonsContainer" class="row">
+            </div>
+        </section>
+    </div>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <input type="email" class="form-control" id="loginEmail" placeholder="Email">
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sign Up</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="signupForm">
+                        <div class="mb-3">
+                            <input type="email" class="form-control" id="signupEmail" placeholder="Email">
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="signupPassword" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Flashcard Modal -->
+    <div class="modal fade" id="addFlashcardModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Flashcard</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="flashcardForm">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="flashcardQuestion" placeholder="Question">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="flashcardAnswer" placeholder="Answer">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Flashcard</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- Add Lesson Modal -->
+<div class="modal fade" id="addLessonModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Lesson</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="lessonForm">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="lessonTitle" placeholder="Lesson Title">
+                    </div>
+                    <div class="mb-3">
+                        <input type="date" class="form-control" id="lessonDate">
+                    </div>
+                    <div class="mb-3">
+                        <select class="form-control" id="lessonMastery">
+                            <option value="mastered">Mastered</option>
+                            <option value="medium">Medium</option>
+                            <option value="not-mastered">Not Mastered</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Lesson</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Theme Selection Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Select Theme</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>Choose a theme:</h6>
+                    <button class="btn btn-primary" id="themePink">Pink</button>
+                    <button class="btn btn-info" id="themeBlue">Blue</button>
+                    <button class="btn btn-secondary" id="themeGrey">Grey</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script src="timer.js"></script>
+    <script src="lessons.js"></script>
+    <script src="tasks.js"></script>
+    <script src="calendar.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
+</create_file>
